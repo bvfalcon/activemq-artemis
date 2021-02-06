@@ -43,7 +43,9 @@
       <module>artemis-core-client-all</module>
       <module>artemis-core-client-osgi</module>
       <module>artemis-server</module>
+      <module>artemis-junit-all</module>
       <module>artemis-junit</module>
+      <module>artemis-junit-extensions</module>
       <module>artemis-jms-client</module>
       <module>artemis-jms-client-all</module>
       <module>artemis-jms-client-osgi</module>
@@ -113,7 +115,6 @@
       <maven.checkstyle.plugin.version>3.1.2</maven.checkstyle.plugin.version>
       <sevntu.checks.version>1.39.0</sevntu.checks.version>
       <checkstyle.version>9.2.1</checkstyle.version>
-      <mockito.version>4.4.0</mockito.version>
       <jctools.version>2.1.2</jctools.version>
       <netty.version>4.1.77.Final</netty.version>
       <hdrhistogram.version>2.1.12</hdrhistogram.version>
@@ -158,8 +159,9 @@
       <version.org.jacoco.plugin>0.8.6</version.org.jacoco.plugin>
       <version.micrometer>1.8.5</version.micrometer>
       <hamcrest.version>2.1</hamcrest.version>
-      <junit.version>4.13.2</junit.version>
-      <surefire.version>2.22.2</surefire.version>
+      <junit.version>5.7.0</junit.version>
+      <mockito.version>4.4.0</mockito.version>
+      <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
       <version.jaxb.runtime>2.3.3</version.jaxb.runtime>
       <paho.client.mqtt.version>1.2.5</paho.client.mqtt.version>
       <postgresql.version>42.4.1</postgresql.version>
@@ -299,14 +301,40 @@
 
    <dependencyManagement>
       <dependencies>
-         <!-- ## Test Dependencies ## -->
+
+         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <!-- Eclipse Public License - v 2.0 -->
+         </dependency>
+
+         <!-- ## Test Dependencies ## Note: Run Junit5 test. -->
+         <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+            <!-- Eclipse Public License - v 2.0 -->
+         </dependency>
+
+         <!-- ## Test Dependencies ## Note: Run Junit4 tests. -->
+         <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.version}</version>
+            <!-- Eclipse Public License - v 2.0 -->
+         </dependency>
+
+         <!-- ## Test Dependencies ## Note: Junit is required in certain module tests.  We should control versions from here. -->
          <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <version>4.13</version>
             <scope>test</scope>
             <!-- License: EPL 1.0 -->
          </dependency>
+
          <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
@@ -1112,7 +1140,6 @@
                <javac-compiler-id>javac</javac-compiler-id>
            </properties>
         </profile>
-
       <profile>
           <id>jdk11to15-errorprone</id>
           <activation>
@@ -1654,6 +1681,7 @@
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-surefire-plugin</artifactId>
+               <version>${maven.surefire.plugin.version}</version>
                <configuration>
                   <forkMode>once</forkMode>
                   <testFailureIgnore>${testFailureIgnore}</testFailureIgnore>
