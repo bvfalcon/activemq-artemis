@@ -107,7 +107,7 @@ public class ActiveMQProducerDelegate extends AbstractActiveMQClientDelegate imp
    protected void createClient() {
       try {
          if (!session.addressQuery(address).isExists() && autoCreateQueue) {
-            log.warn("{}: queue does not exist - creating queue: address = {}, name = {}",
+            logger.warn("{}: queue does not exist - creating queue: address = {}, name = {}",
                      this.getClass().getSimpleName(), address.toString(), address.toString());
             session.createQueue(new QueueConfiguration(address));
          }
@@ -125,7 +125,7 @@ public class ActiveMQProducerDelegate extends AbstractActiveMQClientDelegate imp
          try {
             producer.close();
          } catch (ActiveMQException amqEx) {
-            log.warn("ActiveMQException encountered closing InternalClient ClientProducer - ignoring", amqEx);
+            logger.warn("ActiveMQException encountered closing InternalClient ClientProducer - ignoring", amqEx);
          } finally {
             producer = null;
          }

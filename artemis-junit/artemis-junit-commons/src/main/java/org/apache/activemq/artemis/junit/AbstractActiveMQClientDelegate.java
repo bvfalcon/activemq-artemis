@@ -26,10 +26,10 @@ import org.apache.activemq.artemis.api.core.client.ClientSessionFactory;
 import org.apache.activemq.artemis.api.core.client.ServerLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.invoke.MethodHandles;
 
 public abstract class AbstractActiveMQClientDelegate {
-
-   Logger log = LoggerFactory.getLogger(this.getClass());
+   protected static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
    boolean autoCreateQueue = true;
 
@@ -89,7 +89,7 @@ public abstract class AbstractActiveMQClientDelegate {
    }
 
    void start() {
-      log.info("Starting {}", this.getClass().getSimpleName());
+      logger.info("Starting {}", this.getClass().getSimpleName());
       try {
          sessionFactory = serverLocator.createSessionFactory();
          session = sessionFactory.createSession(username, password, false, true, true, serverLocator.isPreAcknowledge(),
@@ -118,7 +118,7 @@ public abstract class AbstractActiveMQClientDelegate {
          try {
             session.close();
          } catch (ActiveMQException amqEx) {
-            log.warn("ActiveMQException encountered closing InternalClient ClientSession - ignoring", amqEx);
+            logger.warn("ActiveMQException encountered closing InternalClient ClientSession - ignoring", amqEx);
          } finally {
             session = null;
          }

@@ -27,6 +27,7 @@ import org.apache.activemq.artemis.core.server.embedded.EmbeddedActiveMQ;
 import org.junit.rules.ExternalResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.invoke.MethodHandles;
 
 /**
  * A JUnit Rule that embeds an ActiveMQ Artemis server into a test. This JUnit Rule is designed to
@@ -48,8 +49,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  */
 public class EmbeddedActiveMQResource extends ExternalResource implements EmbeddedActiveMQOperations {
-
-   Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
    private EmbeddedActiveMQOperations embeddedActiveMQDelegate;
 
@@ -106,7 +106,7 @@ public class EmbeddedActiveMQResource extends ExternalResource implements Embedd
     */
    @Override
    protected void before() throws Throwable {
-      log.info("Starting {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
+      logger.info("Starting {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
 
       embeddedActiveMQDelegate.start();
 
@@ -118,7 +118,7 @@ public class EmbeddedActiveMQResource extends ExternalResource implements Embedd
     */
    @Override
    protected void after() {
-      log.info("Stopping {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
+      logger.info("Stopping {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
 
       embeddedActiveMQDelegate.stop();
 

@@ -33,6 +33,7 @@ import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
 import org.junit.rules.ExternalResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.invoke.MethodHandles;
 
 /**
  * Deprecated in favor of EmbeddedActiveMQResource. Since Artemis 2.0 all JMS specific broker
@@ -57,8 +58,7 @@ import org.slf4j.LoggerFactory;
  */
 @Deprecated
 public class EmbeddedJMSResource extends ExternalResource implements EmbeddedJMSOperations<EmbeddedJMSResource> {
-
-   Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
    private EmbeddedJMSDelegate embeddedJMSDelegate;
 
@@ -136,7 +136,7 @@ public class EmbeddedJMSResource extends ExternalResource implements EmbeddedJMS
     */
    @Override
    protected void before() throws Throwable {
-      log.info("Starting {}: {}", this.getClass().getSimpleName(), embeddedJMSDelegate.getServerName());
+      logger.info("Starting {}: {}", this.getClass().getSimpleName(), embeddedJMSDelegate.getServerName());
 
       embeddedJMSDelegate.start();
 
@@ -150,7 +150,7 @@ public class EmbeddedJMSResource extends ExternalResource implements EmbeddedJMS
     */
    @Override
    protected void after() {
-      log.info("Stopping {}: {}", this.getClass().getSimpleName(), embeddedJMSDelegate.getServerName());
+      logger.info("Stopping {}: {}", this.getClass().getSimpleName(), embeddedJMSDelegate.getServerName());
 
       super.after();
 

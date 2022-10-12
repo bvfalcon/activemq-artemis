@@ -84,7 +84,7 @@ public class ActiveMQConsumerDelegate extends AbstractActiveMQClientDelegate imp
       boolean browseOnly = false;
       try {
          if (!session.queueQuery(queueName).isExists() && autoCreateQueue) {
-            log.warn("{}: queue does not exist - creating queue: address = {}, name = {}",
+            logger.warn("{}: queue does not exist - creating queue: address = {}, name = {}",
                      this.getClass().getSimpleName(), queueName.toString(), queueName.toString());
             session.createAddress(queueName, RoutingType.MULTICAST, true);
             session.createQueue(new QueueConfiguration(queueName));
@@ -103,7 +103,7 @@ public class ActiveMQConsumerDelegate extends AbstractActiveMQClientDelegate imp
          try {
             consumer.close();
          } catch (ActiveMQException amqEx) {
-            log.warn("Exception encountered closing consumer - ignoring", amqEx);
+            logger.warn("Exception encountered closing consumer - ignoring", amqEx);
          } finally {
             consumer = null;
          }

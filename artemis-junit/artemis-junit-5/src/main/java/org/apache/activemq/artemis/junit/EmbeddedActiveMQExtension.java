@@ -29,6 +29,7 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.lang.invoke.MethodHandles;
 
 /**
  * A JUnit Extension that embeds an ActiveMQ Artemis server into a test.
@@ -49,8 +50,7 @@ import org.slf4j.LoggerFactory;
  * </code></pre>
  */
 public class EmbeddedActiveMQExtension implements BeforeAllCallback, AfterAllCallback, EmbeddedActiveMQOperations {
-
-   Logger log = LoggerFactory.getLogger(this.getClass());
+   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
    private EmbeddedActiveMQOperations embeddedActiveMQDelegate;
 
@@ -103,7 +103,7 @@ public class EmbeddedActiveMQExtension implements BeforeAllCallback, AfterAllCal
     */
    @Override
    public void beforeAll(ExtensionContext context) throws Exception {
-      log.info("Starting {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
+      logger.info("Starting {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
 
       embeddedActiveMQDelegate.start();
 
@@ -114,7 +114,7 @@ public class EmbeddedActiveMQExtension implements BeforeAllCallback, AfterAllCal
     */
    @Override
    public void afterAll(ExtensionContext context) throws Exception {
-      log.info("Stopping {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
+      logger.info("Stopping {}: {}", this.getClass().getSimpleName(), embeddedActiveMQDelegate.getServerName());
 
       embeddedActiveMQDelegate.stop();
 
